@@ -12,16 +12,16 @@ echo  "set power management" >> /var/log/jamf.log
 
 ## Make the main script executable
 echo  "setting main script permissions" >> /var/log/jamf.log
-	chmod a+x /var/tmp/com.uarts.DEPprovisioning
+	chmod a+x /var/tmp/com.d65-DEPNotify-assigncomputer.sh
 
 ## Set permissions and ownership for launch daemon
 echo  "set LaunchDaemon permissions" >> /var/log/jamf.log
-	chmod 644 /Library/LaunchDaemons/com.uarts.launch.plist
-	chown root:wheel /Library/LaunchDaemons/com.uarts.launch.plist
+	chmod 644 /Library/LaunchDaemons/com.d65.launch.plist
+	chown root:wheel /Library/LaunchDaemons/com.d65.launch.plist
 
 ## Load launch daemon into the Launchd system
 echo  "load LaunchDaemon" >> /var/log/jamf.log
-	launchctl load /Library/LaunchDaemons/com.uarts.launch.plist
+	launchctl load /Library/LaunchDaemons/com.d65.launch.plist
 
 # We have to wait for the login window to show because the machine will reboot...
 # so let's start this after the setup assistant is done.
