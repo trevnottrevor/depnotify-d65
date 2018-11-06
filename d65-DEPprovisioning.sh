@@ -2,24 +2,17 @@
 #
 #
 # Created by John Mahlman, University of the Arts Philadelphia (jmahlman@uarts.edu)
-# Name: com.uarts.DEPprovisioning
+# Edited and adapter for use at District 65 by Trev Kelderman (keldermant@district65.net)
+# Name: com.d65-DEPprovisioning.sh
 #
-# Purpose: Install and run DEPNotify at enrollment time and do some final touches
-# for public machines.  If the machine is already in the jss it will automatically continue
-# and complete setup. If the machine isn't in the jss or it's a FACSATFF or OFFICE machine,
+# Purpose: Install and run DEPNotify at enrollment time and do some final touches.
+# If the machine is already in the jss it will automatically continue
+# and complete setup. If the machine isn't in the jss or it's a Staff machine,
 # it will ask the tech to assign it a name and cohort. It also checks for software updates
 # and installs them if found.
-# This gets put in the composer package along with DEPNotofy, com.uarts.launch.plist,
+# This gets put in the composer package along with DEPNotify, com.d65.launch.plist,
 # and any supporting files. Then add the post install script to the package.
 #
-#
-# Changelog
-#
-# 10/17/18- Removed some curly braces that I think were causing issues.
-# 9/10/18	-	Fixed some format issues and an if-statement that was incorrect. Oh, and spell check :P
-# 8/24/18	- Removed an entire section of "MainText" because it was redundant.
-# 8/23/18	- Moved the caffeinate command because it obviously wasn't running if a machine already existed.  Oops.
-# 8/22/18 - New script to merge all DEPprovisioning instances
 #
 # Get the JSS URL from the Mac's jamf plist file, we'll use this to check if the machine is already in the jss
 if [ -e "/Library/Preferences/com.jamfsoftware.jamf.plist" ]; then
@@ -29,8 +22,8 @@ else
 	exit 1
 fi
 # I don't like hardcoding passwords but since we're putting this locally on the machine...
-APIUSER="USERNAME"
-APIPASS="PASSWORD"
+APIUSER="depnotify"
+APIPASS="pfR0ftendc"
 
 JAMFBIN=/usr/local/bin/jamf
 OSVERSION=$(sw_vers -productVersion)
@@ -42,7 +35,7 @@ jssCohort=$(echo "$eaxml" | xpath '//extension_attribute[name="New Cohort"' | aw
 # Get the logged in user
 CURRENTUSER=$(/usr/bin/python -c 'from SystemConfiguration import SCDynamicStoreCopyConsoleUser; import sys; username = (SCDynamicStoreCopyConsoleUser(None, None, None) or [None])[0]; username = [username,""][username in [u"loginwindow", None, u""]]; sys.stdout.write(username + "\n");')
 # Setup Done File
-setupDone="/var/db/receipts/com.uarts.provisioning.done.bom"
+setupDone="/var/db/receipts/com.d65.provisioning.done.bom"
 # DEPNotify Log file
 DNLOG=/var/tmp/depnotify.log
 
@@ -50,7 +43,7 @@ DNLOG=/var/tmp/depnotify.log
 # the launch Daemon. This helps if someone re-enrolls a machine for some reason.
 if [ -f "${setupDone}" ]; then
 	# Remove the Launch Daemon
-	/bin/rm -Rf /Library/LaunchDaemons/com.uarts.launch.plist
+	/bin/rm -Rf /Library/LaunchDaemons/com.d65.launch.plist
 	# Remove this script
 	/bin/rm -- "$0"
 	exit 0
@@ -74,7 +67,7 @@ if pgrep -x "Finder" \
 	# If the computer is NOT in the jss or if it's an OFFICE or FACSTAFF machine
 	# we want to get user input because most likely this is being reprovisioned.
 
-	if [[ "$jssMacName" == "" ]] || [[ "$jssCohort" == "" ]] || [[ "$jssCohort" == "OFFICE" ]] || [[ "$jssCohort" == "FACSTAFF" ]]; then
+	if [[ "$jssMacName" == "" ]] || [[ "$jssCohort" == "" ]] || [[ "$jssCohort" == "Staff" ]]; then
 		# Configure DEPNotify registration window
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify PathToPlistFile /var/tmp/
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify RegisterMainTitle "Setup..."
@@ -93,9 +86,9 @@ if pgrep -x "Finder" \
 		echo "Command: DeterminateManual: 5" >> $DNLOG
 
 		# Open DepNotify fullscreen
-	  sudo -u "$CURRENTUSER" /var/tmp/DEPNotify.app/Contents/MacOS/DEPNotify -fullScreen &
+	  sudo -u "$CURRENTUSER" /Applications/Utilities/DEPNotify.app/Contents/MacOS/DEPNotify -fullScreen &
 		echo "Command: MainText: Make sure this Mac is plugged into a wired network connection before beginning. \n \n \
-		If this is a FACSTAFF machine, enter the username in the \"Computer or User Name\" field." >> $DNLOG
+		If this is a Staff machine, enter the username in the \"Computer or User Name\" field." >> $DNLOG
 
 	  # get user input...
 	  echo "Command: ContinueButtonRegister: Begin" >> $DNLOG
@@ -185,8 +178,7 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
   kill $caffeinatepid
   echo "Command: RestartNow:" >>  $DNLOG
 
-  # Remove DEPNotify and the logs
-  /bin/rm -Rf /var/tmp/DEPNotify.app
+  # Remove DEPNotify logs but not the App
   /bin/rm -Rf /var/tmp/uarts-logo.png
   /bin/rm -Rf $DNLOG
   /bin/rm -Rf $DNPLIST
@@ -196,9 +188,9 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
 	# Remove the autologin user password file so it doesn't login again
 	/bin/rm -Rf /etc/kcpassword
 	# Create a bom file that allow this script to stop launching DEPNotify after done
-	/usr/bin/touch /var/db/receipts/com.uarts.provisioning.done.bom
+	/usr/bin/touch /var/db/receipts/com.d65.provisioning.done.bom
 	# Remove the Launch Daemon
-	/bin/rm -Rf /Library/LaunchDaemons/com.uarts.launch.plist
+	/bin/rm -Rf /Library/LaunchDaemons/com.d65.launch.plist
 	# Remove this script
 	/bin/rm -- "$0"
 
