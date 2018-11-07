@@ -105,15 +105,7 @@ if pgrep -x "Finder" \
 		cohort=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Cohort'" | tr [a-z] [A-Z])
 		ASSETTAG=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'D65 Asset Tag'" | tr [a-z] [A-Z])
 		# Let's set the asset tag in the JSS
-		cat << EOF > /var/tmp/assetTag.xml
-	<computer>
-		<general>
-			<asset_tag>$ASSETTAG</asset_tag>
-		</general>
-	</computer>
-EOF
-		# Upload the asset tag xml file
-		/usr/bin/curl -sfku "$APIUSER":"$APIPASS" "$JSSURL"JSSResource/computers/serialnumber/"$serial" -H "Content-type: text/xml" -T /var/tmp/assetTag.xml -X PUT
+		$JAMFBIN recon -assetTag
 
 	else
 		# This is if the machine is already found on the server
@@ -144,8 +136,10 @@ EOF
 		$JAMFBIN createAccount -username $userName -realname $userName -password $userName -admin
 	else
 		echo "Status: Setting computer name..." >> $DNLOG
-		$JAMFBIN setComputerName -name "$computerUserName"
+		$JAMFBIN setComputerName -name "$computerName"
 	fi
+	###### Update this area
+####### $JAMFBIN recon -endUsername $loggedInUser
 
 	# The firstRun scripts policies are were we set our receipts on the machines, no need to do them in this script.
 	echo "Command: MainTitle: $computerUserName"  >> $DNLOG
