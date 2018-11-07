@@ -72,23 +72,23 @@ if pgrep -x "Finder" \
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify PathToPlistFile /var/tmp/
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify RegisterMainTitle "Setup..."
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify RegisterButtonLabel Setup
-	 	sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldUpperPlaceholder "T1337-M01 or uname"
-		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldUpperLabel "Computer or User Name"
-		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldLowerPlaceholder "UA42DSK1337"
-		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldLowerLabel "Asset Tag"
-		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UIPopUpMenuUpper -array 'Public' 'Facstaff' 'Kiosk' 'Music' 'Office' 'Checkout'
+	 	sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldUpperPlaceholder "jeh-t-jappleseed-#####"
+		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldUpperLabel "Computer Name"
+		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldLowerPlaceholder "12345"
+		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldLowerLabel "D65 Asset Tag"
+		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UIPopUpMenuUpper -array 'Base-Staff' 'Elementary-Staff' 'Magnet-Staff' 'Middle-Staff' 'Base-Student' 'Elementary-Student' 'Magnet-Student' 'Middle-Student' 'Magnet-Student-Media' 'Middle-Student-Media' 'Nichols-Student-Music'
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UIPopUpMenuUpperLabel "Cohort"
 
 		# Configure DEPNotify starting window
 		echo "Command: MainTitle: New Mac Setup" >> $DNLOG
-		echo "Command: Image: /var/tmp/uarts-logo.png" >> $DNLOG
+		echo "Command: Image: /var/tmp/d65-logo.png" >> $DNLOG
 		echo "Command: WindowStyle: NotMovable" >> $DNLOG
 		echo "Command: DeterminateManual: 5" >> $DNLOG
 
 		# Open DepNotify fullscreen
 	  sudo -u "$CURRENTUSER" /Applications/Utilities/DEPNotify.app/Contents/MacOS/DEPNotify -fullScreen &
 		echo "Command: MainText: Make sure this Mac is plugged into a wired network connection before beginning. \n \n \
-		If this is a Staff machine, enter the username in the \"Computer or User Name\" field." >> $DNLOG
+		Enter the computer name in the \"Computer Name\" field." >> $DNLOG
 
 	  # get user input...
 	  echo "Command: ContinueButtonRegister: Begin" >> $DNLOG
@@ -101,9 +101,9 @@ if pgrep -x "Finder" \
 	  done
 
 		# Let's read the user data into some variables...
-		computerUserName=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Computer or User Name'" | tr [a-z] [A-Z])
+		computerName=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Computer Name'" | tr [a-z] [A-Z])
 		cohort=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Cohort'" | tr [a-z] [A-Z])
-		ASSETTAG=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Asset Tag'" | tr [a-z] [A-Z])
+		ASSETTAG=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'D65 Asset Tag'" | tr [a-z] [A-Z])
 		# Let's set the asset tag in the JSS
 		cat << EOF > /var/tmp/assetTag.xml
 	<computer>
@@ -118,15 +118,15 @@ EOF
 	else
 		# This is if the machine is already found on the server
 		# Set variables for Computer Name and Role to those from the receipts
-		computerUserName=$jssMacName
+		computerName=$jssMacName
 		cohort=$jssCohort
 
 		# Launch DEPNotify
-		echo "Command: Image: /var/tmp/uarts-logo.png" >> $DNLOG
+		echo "Command: Image: /var/tmp/d65-logo.png" >> $DNLOG
 		echo "Command: MainTitle: Setting things up..."  >> $DNLOG
 		echo "Command: WindowStyle: NotMovable" >> $DNLOG
 		echo "Command: DeterminateManual: 4" >> $DNLOG
-		sudo -u "$CURRENTUSER" /var/tmp/DEPNotify.app/Contents/MacOS/DEPNotify -fullScreen &
+		sudo -u "$CURRENTUSER" /Applications/Utilities/DEPNotify.app/Contents/MacOS/DEPNotify -fullScreen &
 		echo "Status: Please wait..." >> $DNLOG
 	fi # End of "is this a known or unknown machine" section..this is the merge
 
