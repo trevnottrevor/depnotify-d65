@@ -64,10 +64,10 @@ if pgrep -x "Finder" \
 	# Wait a few seconds
 	sleep 5
 
-	# If the computer is NOT in the jss or if it's an OFFICE or FACSTAFF machine
+	# If the computer is NOT in the jss or if it's an BASE-STAFF, ELEMENTARY-STAFF, MAGNET-STAFF, MIDDLE-STAFF machine
 	# we want to get user input because most likely this is being reprovisioned.
 
-	if [[ "$jssMacName" == "" ]] || [[ "$jssCohort" == "" ]] || [[ "$jssCohort" == "Staff" ]]; then
+	if [[ "$jssMacName" == "" ]] || [[ "$jssCohort" == "" ]] || [[ "$jssCohort" == "BASE-STAFF" ]] || [[ "$jssCohort" == "ELEMENTARY-STAFF" ]] || [[ "$jssCohort" == "MAGNET-STAFF" ]] || [[ "$jssCohort" == "MIDDLE-STAFF" ]]; then
 		# Configure DEPNotify registration window
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify PathToPlistFile /var/tmp/
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify RegisterMainTitle "Setup..."
