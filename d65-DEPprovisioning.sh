@@ -2,7 +2,7 @@
 #
 #
 # Created by John Mahlman, University of the Arts Philadelphia (jmahlman@uarts.edu)
-# Edited and adapter for use at District 65 by Trev Kelderman (keldermant@district65.net)
+# Edited and adapted for use at District 65 by Trev Kelderman (keldermant@district65.net)
 # Name: com.d65-DEPprovisioning.sh
 #
 # Purpose: Install and run DEPNotify at enrollment time and do some final touches.
