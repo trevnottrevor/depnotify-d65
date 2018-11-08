@@ -99,7 +99,7 @@ if pgrep -x "Finder" \
 	  	[[ -f $DNPLIST ]] && break
 	  	sleep 1
 	  done
-###### Clean up this area and add notes
+		###### Clean up this area and add notes
 		# Let's read the user data into some variables...
 		computerName=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Computer Name'" | tr [a-z] [A-Z])
 		cohort=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Cohort'" | tr [a-z] [A-Z])
@@ -108,8 +108,9 @@ if pgrep -x "Finder" \
 		$JAMFBIN setComputerName -name "$computerName"
 		# Let's set the asset tag in the JSS
 		$JAMFBIN recon -assetTag $ASSETTAG
-			###### Update this area
-####### $JAMFBIN recon -endUsername $loggedInUser
+		###### Update this area
+		assignedUser=`@computerName | awk 'BEGIN {FS="-"} END {print $3}'`
+		$JAMFBIN recon -endUsername $assignedUser
 
 	else
 		# This is if the machine is already found on the server
