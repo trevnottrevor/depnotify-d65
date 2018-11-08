@@ -105,12 +105,9 @@ if pgrep -x "Finder" \
 		cohort=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Cohort'" | tr [a-z] [A-Z])
 		ASSETTAG=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'D65 Asset Tag'" | tr [a-z] [A-Z])
 		echo "Status: Setting computer name..." >> $DNLOG
-		$JAMFBIN setComputerName -name "$computerName"
-		# Let's set the asset tag in the JSS
-		$JAMFBIN recon -assetTag $ASSETTAG
-		###### Update this area
-		assignedUser=`@computerName | awk 'BEGIN {FS="-"} END {print $3}'`
-		$JAMFBIN recon -endUsername $assignedUser
+		scutil --set HostName "$computerName"
+		scutil --set LocalHostName "$computerName"
+		scutil --set ComputerName "$computerName"
 
 	else
 		# This is if the machine is already found on the server
@@ -146,7 +143,13 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
 
 	echo "Command: DeterminateManualStep:" >> $DNLOG
 	echo "Status: Updating Inventory..." >> $DNLOG
-	$JAMFBIN recon
+		
+		$JAMFBIN recon
+			# Let's set the asset tag in the JSS
+		$JAMFBIN recon -assetTag $ASSETTAG
+		###### Update this area
+		assignedUser=`@computerName | awk 'BEGIN {FS="-"} END {print $3}'`
+		$JAMFBIN recon -endUsername $assignedUser
 
 	# Run Software updates, Make sure you have the SUS set to an internal one in your first run. You can also hardcode it here.
   echo "Command: DeterminateManualStep:" >> $DNLOG
