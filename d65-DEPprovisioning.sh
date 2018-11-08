@@ -99,13 +99,17 @@ if pgrep -x "Finder" \
 	  	[[ -f $DNPLIST ]] && break
 	  	sleep 1
 	  done
-
+###### Clean up this area and add notes
 		# Let's read the user data into some variables...
 		computerName=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Computer Name'" | tr [a-z] [A-Z])
 		cohort=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Cohort'" | tr [a-z] [A-Z])
 		ASSETTAG=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'D65 Asset Tag'" | tr [a-z] [A-Z])
+		echo "Status: Setting computer name..." >> $DNLOG
+		$JAMFBIN setComputerName -name "$computerName"
 		# Let's set the asset tag in the JSS
 		$JAMFBIN recon -assetTag $ASSETTAG
+			###### Update this area
+####### $JAMFBIN recon -endUsername $loggedInUser
 
 	else
 		# This is if the machine is already found on the server
@@ -125,23 +129,7 @@ if pgrep -x "Finder" \
 	# Carry on with the setup...
 	# This is where we do everything else...
 
-	# Since we have a different naming convention for FACSTAFF machines and we need to set the "User" info in the jss
-	# we're going to break down the naming of the system by cohort here.
-	echo "Command: DeterminateManualStep:" >> $DNLOG
-	if [[ "$cohort" == "FACSTAFF" ]]; then
-		echo "Status: Assigning and renaming device..." >> $DNLOG
-		$JAMFBIN policy -event enroll-assignFacstaff # This runs the script 'DEP-DEPNotify-assignFacstaff.sh'
-		userName=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Computer or User Name'" | tr [A-Z] [a-z])
-		echo "Status: Creating local user account with password as username..." >> $DNLOG
-		$JAMFBIN createAccount -username $userName -realname $userName -password $userName -admin
-	else
-		echo "Status: Setting computer name..." >> $DNLOG
-		$JAMFBIN setComputerName -name "$computerName"
-	fi
-	###### Update this area
-####### $JAMFBIN recon -endUsername $loggedInUser
-
-	# The firstRun scripts policies are were we set our receipts on the machines, no need to do them in this script.
+	# The firstRun scripts policies are where we set our receipts on the machines, no need to do them in this script.
 	echo "Command: MainTitle: $computerUserName"  >> $DNLOG
 	echo "Status: Running FirstRun scripts and installing packages..." >> $DNLOG
 	echo "Command: DeterminateManualStep:" >> $DNLOG
@@ -153,9 +141,6 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
 	|| [[ "$cohort" == "MUSIC" ]] || [[ "$cohort" == "KIOSK" ]]; then
 		$JAMFBIN policy -event install-"$cohort"-software
 		$JAMFBIN policy -event enroll-firstRun"$cohort"-scripts
-	else
-		$JAMFBIN policy -event install-PUBLIC-software
-		$JAMFBIN policy -event enroll-firstRunPUBLIC-scripts
 	fi
 
 	echo "Command: DeterminateManualStep:" >> $DNLOG
