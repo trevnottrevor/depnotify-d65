@@ -105,7 +105,7 @@ if pgrep -x "Finder" \
 		cohort=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Cohort'" | tr [a-z] [A-Z])
 		ASSETTAG=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'D65 Asset Tag'" | tr [a-z] [A-Z])
 		# Let's set the asset tag in the JSS
-		$JAMFBIN recon -assetTag
+		$JAMFBIN recon -assetTag $ASSETTAG
 
 	else
 		# This is if the machine is already found on the server
