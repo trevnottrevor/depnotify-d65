@@ -27,7 +27,7 @@ POLICY_ARRAY=(
 "Installing ActivInspire and ActivInspire Resources,installinspire"
 "Installing Epson Interactive Driver and Tools,installepsondriverandtools"
 "Installing NoMAD,installnomad"
-"Installing D65 Support Utilites,installd65supportutilities"
+"Installing D65 Staff Support Utilites,installd65staffsupportutilities"
 )
 
 # Loop to run policies
