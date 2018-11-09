@@ -81,7 +81,7 @@ if pgrep -x "Finder" \
 
 		# Configure DEPNotify starting window
 		echo "Command: MainTitle: New Mac Setup" >> $DNLOG
-		echo "Command: Image: /var/tmp/d65-logo.png" >> $DNLOG
+		echo "Command: Image: /Library/JAMF D65/d65-logo.png" >> $DNLOG
 		echo "Command: WindowStyle: NotMovable" >> $DNLOG
 		echo "Command: DeterminateManual: 5" >> $DNLOG
 
@@ -99,11 +99,10 @@ if pgrep -x "Finder" \
 	  	[[ -f $DNPLIST ]] && break
 	  	sleep 1
 	  done
-		###### Clean up this area and add notes
 		# Let's read the user data into some variables...
 		computerName=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Computer Name'" | tr [a-z] [A-Z])
 		cohort=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Cohort'" | tr [a-z] [A-Z])
-		ASSETTAG=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'D65 Asset Tag'" | tr [a-z] [A-Z])
+		
 		echo "Status: Setting computer name..." >> $DNLOG
 		scutil --set HostName "$computerName"
 		scutil --set LocalHostName "$computerName"
@@ -114,7 +113,8 @@ if pgrep -x "Finder" \
 		# Set variables for Computer Name and Role to those from the receipts
 		computerName=$jssMacName
 		cohort=$jssCohort
-
+		ASSETTAG=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'D65 Asset Tag'" | tr [a-z] [A-Z])
+		
 		# Launch DEPNotify
 		echo "Command: Image: /var/tmp/d65-logo.png" >> $DNLOG
 		echo "Command: MainTitle: Setting things up..."  >> $DNLOG
@@ -126,31 +126,36 @@ if pgrep -x "Finder" \
 
 	# Carry on with the setup...
 	# This is where we do everything else...
+	
+	#######Update this section with different cohorts
+	# Since we have a different naming convention for FACSTAFF machines and we need to set the "User" info in the jss
+	# we're going to break down the naming of the system by cohort here.
+	echo "Command: DeterminateManualStep:" >> $DNLOG
+		if [[ "$cohort" == "BASE-STAFF" ]] || [[ "$cohort" == "ELEMENTARY-STAFF" ]] || [[ "$cohort" == "MAGNET-STAFF" ]] || [[ "$cohort" == "MIDDLE-STAFF" ]]; then
+		echo "Status: Assigning device..." >> $DNLOG
+		assignedUser=`$computerName | awk 'BEGIN {FS="-"} END {print $3}'`
+		$JAMFBIN recon -endUsername $assignedUser
+	fi
+	########
 
 	# The firstRun scripts policies are where we set our receipts on the machines, no need to do them in this script.
-	echo "Command: MainTitle: $computerUserName"  >> $DNLOG
+	echo "Command: MainTitle: $computerName"  >> $DNLOG
 	echo "Status: Running FirstRun scripts and installing packages..." >> $DNLOG
 	echo "Command: DeterminateManualStep:" >> $DNLOG
 	echo "Command: MainText: This Mac is installing all necessary software and running some installation scripts.  \
-Please do not interrupt this process. This may take a few hours to complete; the machine restart \
+Please do not interrupt this process. This may take a while to complete; the machine restarts \
 automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OSVERSION"  >> $DNLOG
 
-	if [[ "$cohort" == "CHECKOUT" ]] || [[ "$cohort" == "OFFICE" ]] || [[ "$cohort" == "FACSTAFF" ]] \
-	|| [[ "$cohort" == "MUSIC" ]] || [[ "$cohort" == "KIOSK" ]]; then
 		$JAMFBIN policy -event install-"$cohort"-software
-		$JAMFBIN policy -event enroll-firstRun"$cohort"-scripts
-	fi
+		$JAMFBIN policy -event enroll-firstRun-scripts
 
 	echo "Command: DeterminateManualStep:" >> $DNLOG
 	echo "Status: Updating Inventory..." >> $DNLOG
 		
 		$JAMFBIN recon
-			# Let's set the asset tag in the JSS
+		# Let's set the asset tag in the JSS
 		$JAMFBIN recon -assetTag $ASSETTAG
-		###### Update this area
-		assignedUser=`@computerName | awk 'BEGIN {FS="-"} END {print $3}'`
-		$JAMFBIN recon -endUsername $assignedUser
-
+		
 	# Run Software updates, Make sure you have the SUS set to an internal one in your first run. You can also hardcode it here.
   echo "Command: DeterminateManualStep:" >> $DNLOG
   echo "Status: Checking for and installing any OS updates..." >> $DNLOG
