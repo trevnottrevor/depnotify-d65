@@ -127,16 +127,14 @@ if pgrep -x "Finder" \
 	# Carry on with the setup...
 	# This is where we do everything else...
 	
-	#######Update this section with different cohorts
 	# Since we have a different naming convention for FACSTAFF machines and we need to set the "User" info in the jss
 	# we're going to break down the naming of the system by cohort here.
 	echo "Command: DeterminateManualStep:" >> $DNLOG
-		if [[ "$cohort" == "BASE-STAFF" ]] || [[ "$cohort" == "ELEMENTARY-STAFF" ]] || [[ "$cohort" == "MAGNET-STAFF" ]] || [[ "$cohort" == "MIDDLE-STAFF" ]]; then
+	if [[ "$cohort" == "BASE-STAFF" ]] || [[ "$cohort" == "ELEMENTARY-STAFF" ]] || [[ "$cohort" == "MAGNET-STAFF" ]] || [[ "$cohort" == "MIDDLE-STAFF" ]]; then
 		echo "Status: Assigning device..." >> $DNLOG
 		assignedUser=`$computerName | awk 'BEGIN {FS="-"} END {print $3}'`
 		$JAMFBIN recon -endUsername $assignedUser
 	fi
-	########
 
 	# The firstRun scripts policies are where we set our receipts on the machines, no need to do them in this script.
 	echo "Command: MainTitle: $computerName"  >> $DNLOG
