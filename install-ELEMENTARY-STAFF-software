@@ -19,6 +19,7 @@ POLICY_ARRAY=(
 "Installing Google Backup and Sync,installbackupandsync"
 "Installing Google Chrome,installchrome"
 "Installing Google Earth,installgoogleearth"
+"Installing Kidspiration,installkidspiration"
 "Installing Microsoft Office 2008,installoffice"
 "Installing Silverlight,installsilverlight"
 "Installing VLC and VLC Web Plugin,installvlcandvlcwebplugin"
