@@ -102,6 +102,7 @@ if pgrep -x "Finder" \
 		# Let's read the user data into some variables...
 		computerName=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Computer Name'" | tr [a-z] [A-Z])
 		cohort=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Cohort'" | tr [a-z] [A-Z])
+		ASSETTAG=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'D65 Asset Tag'" | tr [a-z] [A-Z])
 		
 		echo "Status: Setting computer name..." >> $DNLOG
 		scutil --set HostName "$computerName"
@@ -113,7 +114,6 @@ if pgrep -x "Finder" \
 		# Set variables for Computer Name and Role to those from the receipts
 		computerName=$jssMacName
 		cohort=$jssCohort
-		ASSETTAG=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'D65 Asset Tag'" | tr [a-z] [A-Z])
 		
 		# Launch DEPNotify
 		echo "Command: Image: /Library/JAMF D65/d65logo-depnotify.png" >> $DNLOG
@@ -122,17 +122,23 @@ if pgrep -x "Finder" \
 		echo "Command: DeterminateManual: 4" >> $DNLOG
 		sudo -u "$CURRENTUSER" /Applications/Utilities/DEPNotify.app/Contents/MacOS/DEPNotify -fullScreen &
 		echo "Status: Please wait..." >> $DNLOG
+		
+		echo "Setting computer name, host name and local host name..."
+		scutil --set HostName "$computerName"
+		scutil --set LocalHostName "$computerName"
+		scutil --set ComputerName "$computerName"
+		
 	fi # End of "is this a known or unknown machine" section..this is the merge
 
 	# Carry on with the setup...
 	# This is where we do everything else...
-	
-	# Since we have a different naming convention for FACSTAFF machines and we need to set the "User" info in the jss
+	# Setting the variable for the assigned user. This user will get assigned in the JSS only for staff computers
+		assignedUser=`$computerName | awk 'BEGIN {FS="-"} END {print $3}'`
+	# Since we have a different naming convention for Staff machines and we need to set the "User" info in the jss
 	# we're going to break down the naming of the system by cohort here.
 	echo "Command: DeterminateManualStep:" >> $DNLOG
 	if [[ "$cohort" == "BASE-STAFF" ]] || [[ "$cohort" == "ELEMENTARY-STAFF" ]] || [[ "$cohort" == "MAGNET-STAFF" ]] || [[ "$cohort" == "MIDDLE-STAFF" ]]; then
 		echo "Status: Assigning device..." >> $DNLOG
-		assignedUser=`$computerName | awk 'BEGIN {FS="-"} END {print $3}'`
 		$JAMFBIN recon -endUsername $assignedUser
 	fi
 
@@ -149,7 +155,6 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
 
 	echo "Command: DeterminateManualStep:" >> $DNLOG
 	echo "Status: Updating Inventory..." >> $DNLOG
-		
 		$JAMFBIN recon
 		# Let's set the asset tag in the JSS
 		$JAMFBIN recon -assetTag $ASSETTAG
