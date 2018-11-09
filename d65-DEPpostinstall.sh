@@ -23,6 +23,12 @@ echo  "set LaunchDaemon permissions" >> /var/log/jamf.log
 echo  "load LaunchDaemon" >> /var/log/jamf.log
 	launchctl load /Library/LaunchDaemons/com.d65.launch.plist
 
+## Load launch daemon into the Launchd system
+echo  "creating hidden directory used for storing D65 JAMF data" >> /var/log/jamf.log
+	mkdir /Library/JAMF\ D65
+	mkdir /Library/JAMF\ D65/ComputerName
+	chflags hidden /Library/JAMF\ D65
+
 # We have to wait for the login window to show because the machine will reboot...
 # so let's start this after the setup assistant is done.
 CURRENTUSER=$(/usr/bin/python -c 'from SystemConfiguration import SCDynamicStoreCopyConsoleUser; import sys; username = (SCDynamicStoreCopyConsoleUser(None, None, None) or [None])[0]; username = [username,""][username in [u"loginwindow", None, u""]]; sys.stdout.write(username + "\n");')
