@@ -116,7 +116,7 @@ if pgrep -x "Finder" \
 		ASSETTAG=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'D65 Asset Tag'" | tr [a-z] [A-Z])
 		
 		# Launch DEPNotify
-		echo "Command: Image: /var/tmp/d65-logo.png" >> $DNLOG
+		echo "Command: Image: /Library/JAMF D65/d65logo-depnotify.png" >> $DNLOG
 		echo "Command: MainTitle: Setting things up..."  >> $DNLOG
 		echo "Command: WindowStyle: NotMovable" >> $DNLOG
 		echo "Command: DeterminateManual: 4" >> $DNLOG
@@ -167,7 +167,6 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
   echo "Command: RestartNow:" >>  $DNLOG
 
   # Remove DEPNotify logs but not the App
-  /bin/rm -Rf /var/tmp/uarts-logo.png
   /bin/rm -Rf $DNLOG
   /bin/rm -Rf $DNPLIST
 
