@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# script to install FACSTAFF software with an array. Taken from jamf professional services script
+# script to install BASE-STAFF software with an array. Taken from jamf professional services script
 # which can be found here: https://github.com/jamfprofessionalservices/DEP-Notify/blob/master/depNotify.sh
 
 JAMFBIN=/usr/local/bin/jamf
