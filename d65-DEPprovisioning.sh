@@ -81,7 +81,7 @@ if pgrep -x "Finder" \
 
 		# Configure DEPNotify starting window
 		echo "Command: MainTitle: New Mac Setup" >> $DNLOG
-		echo "Command: Image: /Library/JAMF D65/d65-logo.png" >> $DNLOG
+		echo "Command: Image: /Library/JAMF D65/d65logo-depnotify.png" >> $DNLOG
 		echo "Command: WindowStyle: NotMovable" >> $DNLOG
 		echo "Command: DeterminateManual: 5" >> $DNLOG
 
