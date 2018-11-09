@@ -9,7 +9,7 @@
 	<key>Label</key>
 	<string>com.d65.launch</string>
 	<key>Program</key>
-	<string>/var/tmp/com.d65-DEPprovisioning</string>
+	<string>/var/tmp/com.d65-DEPprovisioning.sh</string>
 	<key>RunAtLoad</key>
 	<true/>
 	<key>StartInterval</key>
