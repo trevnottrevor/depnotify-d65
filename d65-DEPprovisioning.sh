@@ -158,11 +158,6 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
 		echo "Status: Assigning device..." >> $DNLOG
 		$JAMFBIN recon -endUsername $assignedUser
 	fi
-		
-	# Run Software updates, Make sure you have the SUS set to an internal one in your first run. You can also hardcode it here.
-  echo "Command: DeterminateManualStep:" >> $DNLOG
-  echo "Status: Checking for and installing any OS updates..." >> $DNLOG
-  /usr/sbin/softwareupdate -ia
 
 	echo "Command: DeterminateManualStep:" >> $DNLOG
 	echo "Status: Cleaning up files and restarting system..." >> $DNLOG
