@@ -134,7 +134,7 @@ if pgrep -x "Finder" \
 	# This is where we do everything else...
 	
 	# Setting the variable for the assigned user. This user will get assigned in the JSS only for staff computers
-		assignedUser=`"$computerName" | awk 'BEGIN {FS="-"} END {print $3}'`
+		assignedUser=`scutil --get ComputerName | awk 'BEGIN {FS="-"} END {print $3}'`
 	# Since we have a different naming convention for Staff machines and we need to set the "User" info in the jss
 	# we're going to break down the naming of the system by cohort here.
 	echo "Command: DeterminateManualStep:" >> $DNLOG
