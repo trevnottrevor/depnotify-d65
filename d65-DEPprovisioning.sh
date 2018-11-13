@@ -183,6 +183,8 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
 	/bin/rm -Rf /Library/LaunchDaemons/com.d65.launch.plist
 	# Remove this script
 	/bin/rm -- "$0"
+	
+	/sbin/shutdown -r
 
 fi
 exit 0
