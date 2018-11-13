@@ -12,7 +12,7 @@ echo  "set power management" >> /var/log/jamf.log
 
 ## Make the main script executable
 echo  "setting main script permissions" >> /var/log/jamf.log
-	chmod a+x /Users/Shared/com.d65-DEPprovisioning.sh
+	chmod a+x /Users/Shared/d65-DEPprovisioning.sh
 
 ## Set permissions and ownership for launch daemon
 echo  "set LaunchDaemon permissions" >> /var/log/jamf.log
