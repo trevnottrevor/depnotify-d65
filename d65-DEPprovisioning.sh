@@ -132,6 +132,21 @@ if pgrep -x "Finder" \
 
 	# Carry on with the setup...
 	# This is where we do everything else...
+	
+	# Setting the variable for the assigned user. This user will get assigned in the JSS only for staff computers
+		assignedUser=`"$computerName" | awk 'BEGIN {FS="-"} END {print $3}'`
+	# Since we have a different naming convention for Staff machines and we need to set the "User" info in the jss
+	# we're going to break down the naming of the system by cohort here.
+	echo "Command: DeterminateManualStep:" >> $DNLOG
+	if [[ "$cohort" == "BASE-STAFF" ]] || [[ "$cohort" == "ELEMENTARY-STAFF" ]] || [[ "$cohort" == "MAGNET-STAFF" ]] || [[ "$cohort" == "MIDDLE-STAFF" ]]; then
+		echo "Status: Assigning device..." >> $DNLOG
+		$JAMFBIN recon -endUsername $assignedUser
+	else
+		echo "Status: Setting computer name..." >> $DNLOG
+		scutil --set HostName "$computerName"
+		scutil --set LocalHostName "$computerName"
+		scutil --set ComputerName "$computerName"
+	fi
 
 	# The firstRun scripts policies are where we set our receipts on the machines, no need to do them in this script.
 	echo "Command: MainTitle: $computerName"  >> $DNLOG
@@ -149,15 +164,6 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
 		$JAMFBIN recon
 		# Let's set the asset tag in the JSS
 		$JAMFBIN recon -assetTag $ASSETTAG
-		# Setting the variable for the assigned user. This user will get assigned in the JSS only for staff computers
-		assignedUser=`$computerName | awk 'BEGIN {FS="-"} END {print $3}'`
-	# Since we have a different naming convention for Staff machines and we need to set the "User" info in the jss
-	# we're going to break down the naming of the system by cohort here.
-	echo "Command: DeterminateManualStep:" >> $DNLOG
-	if [[ "$cohort" == "BASE-STAFF" ]] || [[ "$cohort" == "ELEMENTARY-STAFF" ]] || [[ "$cohort" == "MAGNET-STAFF" ]] || [[ "$cohort" == "MIDDLE-STAFF" ]]; then
-		echo "Status: Assigning device..." >> $DNLOG
-		$JAMFBIN recon -endUsername $assignedUser
-	fi
 
 	echo "Command: DeterminateManualStep:" >> $DNLOG
 	echo "Status: Cleaning up files and restarting system..." >> $DNLOG
