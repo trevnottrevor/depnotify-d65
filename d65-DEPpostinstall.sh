@@ -16,7 +16,7 @@ echo  "setting main script permissions" >> /var/log/jamf.log
 
 ## Set permissions and ownership for launch daemon
 echo  "set LaunchDaemon permissions" >> /var/log/jamf.log
-	chmod 644 /Library/LaunchDaemons/com.d65.launch.plist
+	chmod 755 /Library/LaunchDaemons/com.d65.launch.plist
 	chown root:wheel /Library/LaunchDaemons/com.d65.launch.plist
 
 ## Load launch daemon into the Launchd system
