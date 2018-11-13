@@ -6,16 +6,18 @@
 	<string>wheel</string>
 	<key>InitGroups</key>
 	<false/>
-	<key>Label</key>
-	<string>com.d65.launch</string>
-	<key>Program</key>
-	<string>/Users/Shared/com.d65-DEPprovisioning.sh</string>
-	<key>RunAtLoad</key>
-	<true/>
-	<key>StartInterval</key>
-	<integer>10</integer>
 	<key>UserName</key>
 	<string>root</string>
+	<key>StartInterval</key>
+	<integer>10</integer>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>Label</key>
+	<string>com.d65.launch</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/Shared/com.d65-DEPprovisioning.sh</string>
+	</array>
 	<key>StandardErrorPath</key>
 	<string>/var/tmp/depnotify.launch.err</string>
 	<key>StandardOutPath</key>
