@@ -100,9 +100,9 @@ if pgrep -x "Finder" \
 	  	sleep 1
 	  done
 		# Let's read the user data into some variables...
-		computerName=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Computer Name'" | tr [a-z] [A-Z])
+		computerName=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Computer Name'")
 		cohort=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'Cohort'" | tr [a-z] [A-Z])
-		ASSETTAG=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'D65 Asset Tag'" | tr [a-z] [A-Z])
+		ASSETTAG=$(/usr/libexec/plistbuddy $DNPLIST -c "print 'D65 Asset Tag'")
 		
 		echo "Status: Setting computer name..." >> $DNLOG
 		scutil --set HostName "$computerName"
