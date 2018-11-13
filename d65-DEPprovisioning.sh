@@ -184,7 +184,5 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
 	# Remove this script
 	/bin/rm -- "$0"
 	
-	/sbin/shutdown -r
-
 fi
 exit 0
