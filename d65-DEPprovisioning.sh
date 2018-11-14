@@ -23,7 +23,7 @@ else
 fi
 # I don't like hardcoding passwords but since we're putting this locally on the machine...
 APIUSER="depnotify"
-APIPASS="pfR0ftendc"
+APIPASS="d3pN0t!fy"
 
 JAMFBIN=/usr/local/bin/jamf
 OSVERSION=$(sw_vers -productVersion)
