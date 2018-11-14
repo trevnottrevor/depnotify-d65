@@ -175,9 +175,13 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
   /bin/rm -Rf $DNPLIST
 
 	# Wait a few seconds
-	sleep 5
+	sleep 10
 	# Remove the autologin user password file so it doesn't login again
 	/bin/rm -Rf /etc/kcpassword
+	# Remote autologin DEP user, remove from admin group and delete User home folder
+	dscl . delete /Users/dep
+	dseditgroup -o edit -d dep -t user admin
+	rm -rf /Users/dep
 	# Create a bom file that allow this script to stop launching DEPNotify after done
 	/usr/bin/touch /var/db/receipts/com.d65.provisioning.done.bom
 	# Remove the Launch Daemon
