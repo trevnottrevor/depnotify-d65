@@ -175,7 +175,7 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
   /bin/rm -Rf $DNPLIST
 
 	# Wait a few seconds
-	sleep 5
+	sleep 10
 	# Remove the autologin user password file so it doesn't login again
 	/bin/rm -Rf /etc/kcpassword
 	# Remote autologin DEP user, remove from admin group and delete User home folder
