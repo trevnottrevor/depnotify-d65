@@ -23,11 +23,11 @@ POLICY_ARRAY=(
 "Installing Silverlight,installsilverlight"
 "Installing VLC and VLC Web Plugin,installvlcandvlcwebplugin"
 "Installing Legacy GarageBand Loops,installoldgaragebandloops"
-"Installing Java and Java for Mac OS X,installjavaandjavaformacos"
 "Installing ActivInspire and ActivInspire Resources,installinspire"
 "Installing Epson Interactive Driver and Tools,installepsondriverandtools"
 "Installing Adobe Creative Suite 6 Design and Web Premium,installcs6"
 "Installing Media Lab Apps,installmedialabapps"
+"Installing Java and Java for Mac OS X,installjavaandjavaformacos"
 "Preventing Adobe Flash Updates,preventflashupdates"
 "Installing D65 Student Support Utilites,installd65studentsupportutilities"
 )
