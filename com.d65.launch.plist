@@ -11,7 +11,7 @@
 	<key>ProgramArguments</key>
 	<array>
 		<string>/bin/sh</string>
-		<string>/Users/Shared/d65-DEPprovisioning.sh</string>
+		<string>/var/d65/scripts/d65-DEPprovisioning.sh</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
