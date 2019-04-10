@@ -1,4 +1,4 @@
-#!/bin/bash
+t#!/bin/bash
 #
 #
 # Edited and adapted for use at District 65 by Trev Kelderman (keldermant@district65.net)
@@ -23,7 +23,7 @@ else
 fi
 # I don't like hardcoding passwords but since we're putting this locally on the machine...
 APIUSER="depnotify"
-APIPASS="d3pN0t!fy"
+APIPASS="depnotifyapipassword"
 
 JAMFBIN=/usr/local/bin/jamf
 OSVERSION=$(sw_vers -productVersion)
