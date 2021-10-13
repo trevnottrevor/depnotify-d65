@@ -33,21 +33,12 @@ E_NN=404  # Network connection not found ("no network")
 # Set a bunch of variables
 log_location="/private/var/log/d65_firstrun.log"
 archive_log_location="/private/var/log/d65_firstrun-`date +%Y-%m-%d-%H-%M-%S`.log"
-TimeServer1=d65.lan
-TimeServer2=time.apple.com
+TimeServer1=time.apple.com
 TimeZone=America/Chicago
-PINGCTR=1
-ADAVAIL=1
-#The following account can only add machines to the domain (E)
-ADUSER="tech"    
-ADPASS="3v8n5t0n"
-ADADMINGROUPS="enterprise admins,domain admins,technicians"
-NETADMIN="Eric Wacker"
-DOMAIN=d65.lan
 STUCOMP="s"
 
 echo "This log is a record of the d65-firstrun-additionalsettings script which runs post DEP and jamf enrollment and 
-in conjenction with DEPNotify"
+in conjunction with DEPNotify"
 
 # Get the system's UUID to set ByHost prefs (R)
 if [[ `ioreg -rd1 -c IOPlatformExpertDevice | grep -i "UUID" | cut -c27-50` == "00000000-0000-1000-8000-" ]]; then
@@ -82,9 +73,6 @@ fi
 # add the primary time server as the first line.
 /usr/sbin/systemsetup -settimezone $TimeZone
 /usr/sbin/systemsetup -setnetworktimeserver $TimeServer1
-
-# Add the secondary time server as the second line in /etc/ntp.conf  (E)
-echo "server $TimeServer2" >> /etc/ntp.conf 
 
 # Enables the Mac to set its clock using the network time server(s)  (E)
 /usr/sbin/systemsetup -setusingnetworktime on 
@@ -154,6 +142,7 @@ sw_build=$(sw_vers -buildVersion)
 #
 # If the directory is not found, it is created and then the
 # iCloud and Diagnostic pop-up settings are set to be disabled.
+# Enables filename extensions
 
 if [[ ${osvers} -ge 7 ]]; then
   echo "Supressing iCloud Setup Assistant, Siri Setup, and Data & Privacy Setup for future users..."
@@ -165,6 +154,7 @@ do
   /usr/bin/defaults write "${USER_TEMPLATE}"/Library/Preferences/com.apple.SetupAssistant LastSeenBuddyBuildVersion "${sw_build}"
   /usr/bin/defaults write "${USER_TEMPLATE}"/Library/Preferences/com.apple.SetupAssistant DidSeeSiriSetup -bool TRUE
   /usr/bin/defaults write "${USER_TEMPLATE}"/Library/Preferences/com.apple.SetupAssistant DidSeePrivacy -bool TRUE
+  /usr/bin/defaults write "${USER_TEMPLATE}"/Library/Preferences/.GlobalPreferences.plist AppleShowAllExtensions -bool TRUE
 done
 
 # Checks first to see if the Mac is running 10.7+  (R - FBP - 200)
@@ -173,6 +163,7 @@ done
 #
 # If the directory is not found, it is created and then the
 # iCloud pop-up settings are set to be disabled.
+# Enables filename extensions
 
 echo "Supressing iCloud Setup Assistant, Siri Setup, and Data & Privacy Setup for existing users..."
 for USER_HOME in /Users/*
@@ -194,6 +185,7 @@ for USER_HOME in /Users/*
 		/usr/bin/defaults write "${USER_HOME}"/Library/Preferences/com.apple.SetupAssistant LastSeenBuddyBuildVersion "${sw_build}"
 		/usr/bin/defaults write "${USER_HOME}"/Library/Preferences/com.apple.SetupAssistant DidSeeSiriSetup -bool TRUE
 		/usr/bin/defaults write "${USER_HOME}"/Library/Preferences/com.apple.SetupAssistant DidSeePrivacy -bool TRUE
+		/usr/bin/defaults write "${USER_HOME}"/Library/Preferences/.GlobalPreferences.plist AppleShowAllExtensions -bool TRUE
         chown "${USER_UID}" "${USER_HOME}"/Library/Preferences/com.apple.SetupAssistant.plist
       fi
     fi
@@ -269,27 +261,18 @@ echo "Setting up ARD..."
 /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -users ladmin,jamf -access -on -privs -all
 /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -restart -agent -menu
 
-# Now we check to see if the Active Directory is responding (E)
-while [ $PINGCTR -lt 11 ]; do
-	ping -c1 ${DOMAIN} >/dev/null 2>&1
-	ADAVAIL=$?
-	if [ $ADAVAIL -eq 0 ]; then break; fi
-	PINGCTR=$(($PINGCTR + 1))
-	echo "The Active Directory did not respond; attempt #$PINGCTR coming up..."
-	sleep 5
-done
+# Enabling other CIS Benchmark security measures
+# Disabling Apache web server built into macOS
+launchctl disable system/org.apache.httpd
+# Disabling NFS server built into macOS
+launchctl disable system/com.apple.nfsd
+# Enables Library Validation
+defaults write /Library/Preferences/com.apple.security.libraryvalidation.plist DisableLibraryValidation DisableLibraryValidation -bool false
+# Configures account lockout threshold to 5
+# pwpolicy -n /Local/Default -setglobalpolicy "maxFailedLoginAttempts=5"
 
-if [ $ADAVAIL -ne 0 ]; then
-  echo "${DOMAIN} not available, giving up"
-  launchctl load /System/Library/LaunchDaemons/com.apple.loginwindow.plist
-  exit $E_AD
-fi
 
-# This section of code will bind the computer to the D65 Active Directory (E)
-echo "Binding to the Active Directory..."
-echo "Based on the MAC address, the machine name will be $HOST in the AD."
- dsconfigad -add $DOMAIN -computer $HOST -force -username $ADUSER -password $ADPASS
- dsconfigad -mobile enable -mobileconfirm disable  -localhome enable -useuncpath disable -protocol smb -groups "${ADADMINGROUPS}"
+# Removed binding from script because it is no longer needed. (TK)
 
 # no need to run jamf recon because it is run in the DEPprovisioning script
 exit 0
