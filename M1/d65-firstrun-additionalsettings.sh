@@ -268,6 +268,14 @@ launchctl disable system/org.apache.httpd
 launchctl disable system/com.apple.nfsd
 # Enables Library Validation
 defaults write /Library/Preferences/com.apple.security.libraryvalidation.plist DisableLibraryValidation DisableLibraryValidation -bool false
+# Sets permissions on Library so no folders are world writeable
+chmod -R o-w /System/Volumes/Data/Library/
+
+# Require an administrator password to access system-wide preferences
+security authorizationdb read system.preferences > /tmp/system.preferences.plist
+defaults write /tmp/system.preferences.plist shared -bool false
+security authorizationdb write system.preferences < /tmp/system.preferences.plist
+
 # Configures account lockout threshold to 5
 # pwpolicy -n /Local/Default -setglobalpolicy "maxFailedLoginAttempts=5"
 
