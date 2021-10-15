@@ -12,16 +12,16 @@ echo  "set power management" >> /var/log/jamf.log
 
 ## Make the main script executable
 echo  "setting main script permissions" >> /var/log/jamf.log
-	chmod a+x /var/d65/scripts/d65-DEPprovisioning.sh
+	chmod a+x /var/d65/scripts/d65-DEPprovisioning-arm.sh
 
 ## Set permissions and ownership for launch daemon
 echo  "set LaunchDaemon permissions" >> /var/log/jamf.log
-	chmod 755 /Library/LaunchDaemons/com.d65.launch.plist
-	chown root:wheel /Library/LaunchDaemons/com.d65.launch.plist
+	chmod 755 /Library/LaunchDaemons/com.d65.launch-arm.plist
+	chown root:wheel /Library/LaunchDaemons/com.d65.launch-arm.plist
 
 ## Load launch daemon into the Launchd system
 echo  "load LaunchDaemon" >> /var/log/jamf.log
-	launchctl load /Library/LaunchDaemons/com.d65.launch.plist
+	launchctl load /Library/LaunchDaemons/com.d65.launch-arm.plist
 
 ## Load launch daemon into the Launchd system
 echo  "creating hidden directory used for storing D65 JAMF data" >> /var/log/jamf.log
