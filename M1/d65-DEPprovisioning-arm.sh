@@ -3,7 +3,7 @@ t#!/bin/bash
 #
 # Edited and adapted for use at District 65 by Trev Kelderman (keldermant@district65.net)
 # Original script was created by John Mahlman, University of the Arts Philadelphia (jmahlman@uarts.edu)
-# Name: com.d65-DEPprovisioning.sh
+# Name: com.d65-DEPprovisioning-arm.sh
 #
 # Purpose: Install and run DEPNotify at enrollment time and do some final touches.
 # If the machine is already in the jss it will automatically continue
@@ -35,7 +35,7 @@ jssCohort=$(echo "$eaxml" | xpath '//extension_attribute[name="New Cohort"' | aw
 # Get the logged in user
 CURRENTUSER=$(/usr/bin/python -c 'from SystemConfiguration import SCDynamicStoreCopyConsoleUser; import sys; username = (SCDynamicStoreCopyConsoleUser(None, None, None) or [None])[0]; username = [username,""][username in [u"loginwindow", None, u""]]; sys.stdout.write(username + "\n");')
 # Setup Done File
-setupDone="/var/db/receipts/com.d65.provisioning.done.bom"
+setupDone="/var/db/receipts/com.d65.provisioning-arm.done.bom"
 # DEPNotify Log file
 DNLOG=/var/tmp/depnotify.log
 
@@ -168,7 +168,7 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
 		# Wait a few seconds
 		sleep 5
 		# Create a bom file that allow this script to stop launching DEPNotify after done
-		/usr/bin/touch /var/db/receipts/com.d65.provisioning.done.bom
+		/usr/bin/touch /var/db/receipts/com.d65.provisioning-arm.done.bom
 		# Remove the Launch Daemon
 		/bin/rm -Rf /Library/LaunchDaemons/com.d65.launch.plist
 		# Remove the autologin user password file so it doesn't login again
