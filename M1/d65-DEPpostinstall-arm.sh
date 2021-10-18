@@ -38,7 +38,7 @@ while [[ "$CURRENTUSER" == "_mbsetupuser" ]]; do
 done
 
 echo  "add auto-login user" >> /var/log/jamf.log
-	/usr/local/jamf/bin/jamf policy -event dep-autologin
+	/usr/local/jamf/bin/jamf policy -event dep-autologin-m1
 
 echo "Rebooting!" >> /var/log/jamf.log
 	/sbin/shutdown -r +1 &
