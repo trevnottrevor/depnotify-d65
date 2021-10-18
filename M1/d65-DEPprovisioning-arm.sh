@@ -156,8 +156,8 @@ if pgrep -x "Finder" \
 Please do not interrupt this process. This may take a while to complete; the machine restarts \
 automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OSVERSION"  >> $DNLOG
 
-		$JAMFBIN policy -event install-"$cohort"-software
-		$JAMFBIN policy -event enroll-firstRun-scripts
+		$JAMFBIN policy -event install-"$cohort"-software-m1
+		$JAMFBIN policy -event enroll-firstRun-scripts-m1
 
 	echo "Command: DeterminateManualStep:" >> $DNLOG
 	echo "Status: Updating Inventory..." >> $DNLOG
