@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Triggers for the policies to be chained.  Please leave the double quotes around the name of the trigger 
-policyA="depnotifyenroll"
+policyA="depnotifyenrollm1"
 ####################################################################################################
 # Code
 # Do not modify below this line
@@ -14,13 +14,13 @@ then
 	exit 0
 else
 #Running DEPNotify enrollment policy:
-echo "Running DEPNotify enrollment Policy...."
+echo "Running DEPNotify enrollment M1 Policy...."
 /usr/local/bin/jamf policy -event "$policyA"
 exitCode="$?"
 
 if [ $exitCode == 0 ]; 
 then
-	echo "DEPNotify enrollment policy executed successfully."
+	echo "DEPNotify enrollment M1 policy executed successfully."
 	else
 		echo "First policy failed.  Exit code is $exitCode.."
 		exit $exitCode
