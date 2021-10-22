@@ -171,12 +171,6 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
 		/usr/bin/touch /var/db/receipts/com.d65.provisioning-arm.done.bom
 		# Remove the Launch Daemon
 		/bin/rm -Rf /Library/LaunchDaemons/com.d65.launch.plist
-		# Remove the autologin user password file so it doesn't login again
-		/bin/rm -Rf /etc/kcpassword
-		# Remote autologin DEP user, remove from admin group and delete User home folder
-		dscl . delete /Users/dep
-		dseditgroup -o edit -d dep -t user admin
-		rm -Rf /Users/dep
 
 	echo "Command: DeterminateManualStep:" >> $DNLOG
 	echo "Status: Cleaning up files and restarting system..." >> $DNLOG
