@@ -67,7 +67,7 @@ if pgrep -x "Finder" \
 	# If the computer is NOT in the jss or if it's an BASE-STAFF, ELEMENTARY-STAFF, MAGNET-STAFF, MIDDLE-STAFF machine
 	# we want to get user input because most likely this is being reprovisioned.
 
-	if [[ "$jssMacName" == "" ]] || [[ "$jssCohort" == "" ]] || [[ "$jssCohort" == "BASE-STAFF" ]] || [[ "$jssCohort" == "ELEMENTARY-STAFF" ]] || [[ "$jssCohort" == "MAGNET-STAFF" ]] || [[ "$jssCohort" == "MIDDLE-STAFF" ]]; then
+	if [[ "$jssMacName" == "" ]] || [[ "$jssCohort" == "" ]] || [[ "$jssCohort" == "BASE-STAFF-ARM" ]] || [[ "$jssCohort" == "ELEMENTARY-STAFF-ARM" ]] || [[ "$jssCohort" == "MAGNET-STAFF-ARM" ]] || [[ "$jssCohort" == "MIDDLE-STAFF-ARM" ]]; then
 		# Configure DEPNotify registration window
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify PathToPlistFile /var/tmp/
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify RegisterMainTitle "Setup..."
@@ -76,7 +76,7 @@ if pgrep -x "Finder" \
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldUpperLabel "Computer Name"
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldLowerPlaceholder "12345"
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldLowerLabel "D65 Asset Tag"
-		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UIPopUpMenuUpper -array 'Base-Staff' 'Elementary-Staff' 'Magnet-Staff' 'Middle-Staff' 'Base-Student' 'Elementary-Student' 'Magnet-Student' 'Middle-Student' 'Magnet-Student-Media' 'Middle-Student-Media' 'Nichols-Student-Music'
+		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UIPopUpMenuUpper -array 'Base-Staff-arm' 'Elementary-Staff-arm' 'Magnet-Staff-arm' 'Middle-Staff-arm' 'Base-Student-arm' 'Elementary-Student-arm' 'Magnet-Student-arm' 'Middle-Student-arm' 'Magnet-Student-Media-arm' 'Middle-Student-Media-arm' 'Nichols-Student-Music-arm'
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UIPopUpMenuUpperLabel "Cohort"
 
 		# Configure DEPNotify starting window
@@ -138,7 +138,7 @@ if pgrep -x "Finder" \
 	# Since we have a different naming convention for Staff machines and we need to set the "User" info in the jss
 	# we're going to break down the naming of the system by cohort here.
 	echo "Command: DeterminateManualStep:" >> $DNLOG
-	if [[ "$cohort" == "BASE-STAFF" ]] || [[ "$cohort" == "ELEMENTARY-STAFF" ]] || [[ "$cohort" == "MAGNET-STAFF" ]] || [[ "$cohort" == "MIDDLE-STAFF" ]]; then
+	if [[ "$cohort" == "BASE-STAFF-ARM" ]] || [[ "$cohort" == "ELEMENTARY-STAFF-ARM" ]] || [[ "$cohort" == "MAGNET-STAFF-ARM" ]] || [[ "$cohort" == "MIDDLE-STAFF-ARM" ]]; then
 		echo "Status: Assigning device..." >> $DNLOG
 		$JAMFBIN recon -endUsername $assignedUser
 	else
