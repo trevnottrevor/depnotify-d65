@@ -7,7 +7,7 @@
 	<key>InitGroups</key>
 	<false/>
 	<key>Label</key>
-	<string>com.d65.launch</string>
+	<string>com.d65.launch-arm</string>
 	<key>ProgramArguments</key>
 	<array>
 		<string>/bin/sh</string>

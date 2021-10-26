@@ -1,4 +1,4 @@
-t#!/bin/bash
+#!/bin/bash
 #
 #
 # Edited and adapted for use at District 65 by Trev Kelderman (keldermant@district65.net)
@@ -23,7 +23,7 @@ else
 fi
 # I don't like hardcoding passwords but since we're putting this locally on the machine...
 APIUSER="depnotify"
-APIPASS="depnotifyapipassword"
+APIPASS="d3pN0t!fy"
 
 JAMFBIN=/usr/local/bin/jamf
 OSVERSION=$(sw_vers -productVersion)
@@ -64,7 +64,7 @@ if pgrep -x "Finder" \
 	# Wait a few seconds
 	sleep 5
 
-	# If the computer is NOT in the jss or if it's an BASE-STAFF, ELEMENTARY-STAFF, MAGNET-STAFF, MIDDLE-STAFF machine
+	# If the computer is NOT in the jss or if it's an BASE-STAFF-ARM, ELEMENTARY-STAFF-ARM, MAGNET-STAFF-ARM, MIDDLE-STAFF-ARM machine
 	# we want to get user input because most likely this is being reprovisioned.
 
 	if [[ "$jssMacName" == "" ]] || [[ "$jssCohort" == "" ]] || [[ "$jssCohort" == "BASE-STAFF-ARM" ]] || [[ "$jssCohort" == "ELEMENTARY-STAFF-ARM" ]] || [[ "$jssCohort" == "MAGNET-STAFF-ARM" ]] || [[ "$jssCohort" == "MIDDLE-STAFF-ARM" ]]; then
@@ -76,7 +76,7 @@ if pgrep -x "Finder" \
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldUpperLabel "Computer Name"
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldLowerPlaceholder "12345"
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UITextFieldLowerLabel "D65 Asset Tag"
-		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UIPopUpMenuUpper -array 'Base-Staff-arm' 'Elementary-Staff-arm' 'Magnet-Staff-arm' 'Middle-Staff-arm' 'Base-Student-arm' 'Elementary-Student-arm' 'Magnet-Student-arm' 'Middle-Student-arm' 'Magnet-Student-Media-arm' 'Middle-Student-Media-arm' 'Nichols-Student-Music-arm'
+		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UIPopUpMenuUpper -array 'Base-Staff-ARM' 'Elementary-Staff-ARM' 'Magnet-Staff-ARM' 'Middle-Staff-ARM' 'Base-Student-ARM' 'Elementary-Student-ARM' 'Magnet-Student-ARM' 'Middle-Student-M1' 'Magnet-Student-Media-ARM' 'Middle-Student-Media-ARM' 'Nichols-Student-Music-ARM'
 		sudo -u "$CURRENTUSER" defaults write menu.nomad.DEPNotify UIPopUpMenuUpperLabel "Cohort"
 
 		# Configure DEPNotify starting window
