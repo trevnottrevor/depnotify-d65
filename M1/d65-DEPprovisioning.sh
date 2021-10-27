@@ -162,6 +162,8 @@ automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OS
 	echo "Command: DeterminateManualStep:" >> $DNLOG
 	echo "Status: Updating Inventory..." >> $DNLOG
 		$JAMFBIN recon
+		# Wait a minute to give the recon time to write back to the JSS
+		sleep 60
 		# Let's set the asset tag in the JSS
 		$JAMFBIN recon -assetTag $ASSETTAG
 		
