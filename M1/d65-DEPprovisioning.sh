@@ -156,7 +156,7 @@ if pgrep -x "Finder" \
 Please do not interrupt this process. This may take a while to complete; the machine restarts \
 automatically when it's finished. \n \n Cohort: $cohort \n \n macOS Version: $OSVERSION"  >> $DNLOG
 
-		$JAMFBIN policy -event install-"$cohort"-ARM-software
+		$JAMFBIN policy -event install-"$cohort"-software-arm
 		$JAMFBIN policy -event enroll-firstRun-scripts-arm
 
 	echo "Command: DeterminateManualStep:" >> $DNLOG
