@@ -138,7 +138,7 @@ if pgrep -x "Finder" \
 	# Since we have a different naming convention for Staff machines and we need to set the "User" info in the jss
 	# we're going to break down the naming of the system by cohort here.
 	echo "Command: DeterminateManualStep:" >> $DNLOG
-	if [[ "$cohort" == "BASE-STAFF-M1" ]] || [[ "$cohort" == "ELEMENTARY-STAFF-M1" ]] || [[ "$cohort" == "MAGNET-STAFF-M1" ]] || [[ "$cohort" == "MIDDLE-STAFF-M1" ]]; then
+	if [[ "$cohort" == "BASE-STAFF-ARM" ]] || [[ "$cohort" == "ELEMENTARY-STAFF-ARM" ]] || [[ "$cohort" == "MAGNET-STAFF-ARM" ]] || [[ "$cohort" == "MIDDLE-STAFF-ARM" ]]; then
 		echo "Status: Assigning device..." >> $DNLOG
 		$JAMFBIN recon -endUsername $assignedUser
 	else
