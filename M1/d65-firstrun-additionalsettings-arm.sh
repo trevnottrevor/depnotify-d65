@@ -60,8 +60,8 @@ BLDG=$(scutil --get LocalHostName | awk '{print $1}' | cut -c 1-3 | sed 's/-//g'
 echo "The building code for this computer is \"$BLDG\"."
 
 # Configure network time and location services (E)
-# Unload LocationD first.
-/bin/launchctl unload /System/Library/LaunchDaemons/com.apple.locationd.plist
+# Unload LocationD first. (Commented out because not working any longer)
+# /bin/launchctl unload /System/Library/LaunchDaemons/com.apple.locationd.plist
 
 # Checks to make sure the NPT configuration file exists first and if not, creates it
 if [ ! -e /etc/ntp.conf ]; then
@@ -77,8 +77,8 @@ fi
 # Enables the Mac to set its clock using the network time server(s)  (E)
 /usr/sbin/systemsetup -setusingnetworktime on 
 
-# Enable location services, so Network Time can update based on changes in Timezone
-/usr/bin/defaults write /var/db/locationd/Library/Preferences/ByHost/com.apple.locationd.$MAC_UUID LocationServicesEnabled -int 1
+# Enable location services, so Network Time can update based on changes in Timezone (Commented out because not working any longer)
+## /usr/bin/defaults write /var/db/locationd/Library/Preferences/ByHost/com.apple.locationd.$MAC_UUID LocationServicesEnabled -int 1
 chown -R _locationd:_locationd /var/db/locationd
 
 # Re-enable LocationD
@@ -266,17 +266,17 @@ echo "Setting up ARD..."
 launchctl disable system/org.apache.httpd
 # Disabling NFS server built into macOS
 launchctl disable system/com.apple.nfsd
-# Enables Library Validation
-defaults write /Library/Preferences/com.apple.security.libraryvalidation.plist DisableLibraryValidation DisableLibraryValidation -bool false
-# Sets permissions on Library so no folders are world writeable
-chmod -R o-w /System/Volumes/Data/Library/
+# Enables Library Validation (Commented out because not working in macOS 12)
+## defaults write /Library/Preferences/com.apple.security.libraryvalidation.plist DisableLibraryValidation DisableLibraryValidation -bool false
+# Sets permissions on Library so no folders are world writeable (Commented out because not working in macOS 12)
+## chmod -R o-w /System/Volumes/Data/Library/
 
 # Require an administrator password to access system-wide preferences
 security authorizationdb read system.preferences > /tmp/system.preferences.plist
 defaults write /tmp/system.preferences.plist shared -bool false
 security authorizationdb write system.preferences < /tmp/system.preferences.plist
 
-# Configures account lockout threshold to 5
+# Configures account lockout threshold to 5 (not using at this time)
 # pwpolicy -n /Local/Default -setglobalpolicy "maxFailedLoginAttempts=5"
 
 
