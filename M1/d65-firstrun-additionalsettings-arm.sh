@@ -74,15 +74,22 @@ fi
 /usr/sbin/systemsetup -settimezone $TimeZone
 /usr/sbin/systemsetup -setnetworktimeserver $TimeServer1
 
-# Enables the Mac to set its clock using the network time server(s)  (E)
-/usr/sbin/systemsetup -setusingnetworktime on 
+# Enables Location services
+
+/usr/bin/defaults write /var/db/locationd/Library/Preferences/ByHost/com.apple.locationd LocationServicesEnabled -int 1
+/usr/bin/defaults write /Library/Preferences/com.apple.timezone.auto Active -bool true
+/usr/bin/defaults write /private/var/db/timed/Library/Preferences/com.apple.timed.plist TMAutomaticTimeOnlyEnabled -bool YES
+/usr/bin/defaults write /private/var/db/timed/Library/Preferences/com.apple.timed.plist TMAutomaticTimeZoneEnabled -bool YES
+/usr/sbin/systemsetup -setusingnetworktime on
+/usr/sbin/systemsetup -gettimezone
+/usr/sbin/systemsetup -getnetworktimeserver
+
 
 # Enable location services, so Network Time can update based on changes in Timezone (Commented out because not working any longer)
 ## /usr/bin/defaults write /var/db/locationd/Library/Preferences/ByHost/com.apple.locationd.$MAC_UUID LocationServicesEnabled -int 1
 chown -R _locationd:_locationd /var/db/locationd
 
-# Re-enable LocationD
-/bin/launchctl load /System/Library/LaunchDaemons/com.apple.locationd.plist
+
 
 # Set variable to the "enX" port interface designation for 'Wi-Fi", e.g., en0 or en1
 INTERFACE=`networksetup -listallhardwareports | awk '/Hardware Port: Wi-Fi/,/Ethernet/' | awk 'NR==2' | cut -d " " -f 2`

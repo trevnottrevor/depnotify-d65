@@ -9,14 +9,12 @@ DNLOG=/var/tmp/depnotify.log
 # The policy array must be formatted "Progress Bar text,customTrigger". These will be
 # run in order as they appear below.
 POLICY_ARRAY=(
-"Installing Trusted Certificates,trustd65"
 "Installing D65 Print Drivers,installd65printdrivers"
 "Installing Adobe Acrobat DC,installacrobatdc"
 "Installing Adobe Flash,installflash"
 "Installing Adobe Shockwave,installshockwave"
 "Installing Ave Media Suite,installaversuite"
 "Installing Comic Life,installcomiclife"
-"Installing Google Backup and Sync,installbackupandsync"
 "Installing Google Chrome,installchrome"
 "Installing Google Earth,installgoogleearth"
 "Installing Microsoft Office 2008,installoffice"
