@@ -251,6 +251,8 @@ echo "Enabling Gatekeeper..."
 # http://blog.shiz.me/post/67305143330/8192-bit-rsa-keys-in-os-x
 
 /usr/bin/defaults write /Library/Preferences/com.apple.security RSAMaxKeySize -int 32768
+# Enforcing auto re-arm on Gatekeeper
+/usr/bin/defaults write /Library/Preferences/com.apple.security GKAutoRearm -bool YES
 
 # Enable SSH access, then create the SACL and then put the ladmin user in it' (E)
 
@@ -273,6 +275,8 @@ echo "Setting up ARD..."
 launchctl disable system/org.apache.httpd
 # Disabling NFS server built into macOS
 launchctl disable system/com.apple.nfsd
+# Disabling TFTP protocol service built into macOS
+launchctl disable system/com.apple.tftpd
 # Enables Library Validation (Commented out because not working in macOS 12)
 ## defaults write /Library/Preferences/com.apple.security.libraryvalidation.plist DisableLibraryValidation DisableLibraryValidation -bool false
 # Sets permissions on Library so no folders are world writeable (Commented out because not working in macOS 12)
