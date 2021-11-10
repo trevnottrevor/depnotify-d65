@@ -277,6 +277,12 @@ launchctl disable system/org.apache.httpd
 launchctl disable system/com.apple.nfsd
 # Disabling TFTP protocol service built into macOS
 launchctl disable system/com.apple.tftpd
+# Enables Time synchronization Daemon
+launchctl load -w /System/Library/LaunchDaemons/com.apple.timed.plist
+# Disable Guest Access to Shared SMB Folders
+sysadminctl -smbGuestAccess off
+# Disabled SMB Sharing
+launchctl disable system/com.apple.smbd
 # Enables Library Validation (Commented out because not working in macOS 12)
 ## defaults write /Library/Preferences/com.apple.security.libraryvalidation.plist DisableLibraryValidation DisableLibraryValidation -bool false
 # Sets permissions on Library so no folders are world writeable (Commented out because not working in macOS 12)
