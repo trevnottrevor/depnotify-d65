@@ -296,6 +296,27 @@ security authorizationdb write system.preferences < /tmp/system.preferences.plis
 # Configures account lockout threshold to 5 (not using at this time)
 # pwpolicy -n /Local/Default -setglobalpolicy "maxFailedLoginAttempts=5"
 
+# The following section is to enable various audit logs as per CIS Benchmarks
+# Enables Security Auditing
+launchctl load -w /System/Library/LaunchDaemons/com.apple.auditd.plist
+# Configures System to Audit all Authorization and Authentication EVents
+/usr/bin/grep -qE "^flags.*[^-]aa" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,aa/' /etc/security/audit_control; /usr/sbin/audit -s
+# Configures System to Audit All Administrative Action Events
+/usr/bin/grep -qE "^flags.*[^-]ad" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,ad/' /etc/security/audit_control; /usr/sbin/audit -s
+# Configures System to Audit All Failed Program Execution on the System
+/usr/bin/grep -qE "^flags.*-ex" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,-ex/' /etc/security/audit_control; /usr/sbin/audit -s
+# Configure System to Audit All Deletions of Object Attributes
+/usr/bin/grep -qE "^flags.*-fd" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,-fd/' /etc/security/audit_control;/usr/sbin/audit -s
+# Configures System to Audit All Changes of Object Attributes
+/usr/bin/grep -qE "^flags.*fm" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,fm/' /etc/security/audit_control;/usr/sbin/audit -s
+# Configures System to Audit All Failed Read Actions on the System
+/usr/bin/grep -qE "^flags.*-fr" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,-fr/' /etc/security/audit_control;/usr/sbin/audit -s
+# Configures System to Audit All Failed Write Actions on the System
+/usr/bin/grep -qE "^flags.*-fw" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,-fw/' /etc/security/audit_control;/usr/sbin/audit -s
+# Configures System to Audit All Log In and Log Out Events
+/usr/bin/grep -qE "^flags.*[^-]lo" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,lo/' /etc/security/audit_control; /usr/sbin/audit -s
+# Configure Audit Retention to a Minimum of Seven Days
+/usr/bin/sed -i.bak 's/^expire-after.*/expire-after:7d/' /etc/security/audit_control; /usr/sbin/audit -s
 
 # Removed binding from script because it is no longer needed. (TK)
 
