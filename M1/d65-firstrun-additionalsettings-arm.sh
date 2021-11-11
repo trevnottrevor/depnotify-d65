@@ -318,6 +318,10 @@ launchctl load -w /System/Library/LaunchDaemons/com.apple.auditd.plist
 # Configure Audit Retention to a Minimum of Seven Days
 /usr/bin/sed -i.bak 's/^expire-after.*/expire-after:7d/' /etc/security/audit_control; /usr/sbin/audit -s
 
+# Ensures Firewall logging is turned on and set to brief mode instead of throttled or detail
+/usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
+/usr/libexec/ApplicationFirewall/socketfilterfw --setloggingopt brief
+
 # Removed binding from script because it is no longer needed. (TK)
 
 # no need to run jamf recon because it is run in the DEPprovisioning script
