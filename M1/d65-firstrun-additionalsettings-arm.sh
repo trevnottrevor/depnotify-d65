@@ -316,7 +316,7 @@ launchctl load -w /System/Library/LaunchDaemons/com.apple.auditd.plist
 # Configures System to Audit All Log In and Log Out Events
 /usr/bin/grep -qE "^flags.*[^-]lo" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,lo/' /etc/security/audit_control; /usr/sbin/audit -s
 # Configure Audit Retention to a Minimum of Seven Days
-/usr/bin/sed -i.bak 's/^expire-after.*/expire-after:7d/' /etc/security/audit_control; /usr/sbin/audit -s
+/usr/bin/sed -i.bak 's/^expire-after.*/expire-after:21d/' /etc/security/audit_control; /usr/sbin/audit -s
 
 # Ensures Firewall logging is turned on and set to brief mode instead of throttled or detail
 /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
