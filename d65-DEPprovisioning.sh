@@ -33,7 +33,7 @@ eaxml=$(curl "$JSSURL"JSSResource/computers/serialnumber/"$serial"/subset/extens
 jssMacName=$(echo "$eaxml" | xpath '//extension_attribute[name="New Computer Name"' | awk -F'<value>|</value>' '{print $2}')
 jssCohort=$(echo "$eaxml" | xpath '//extension_attribute[name="New Cohort"' | awk -F'<value>|</value>' '{print $2}')
 # Get the logged in user
-CURRENTUSER=$(/usr/bin/python -c 'from SystemConfiguration import SCDynamicStoreCopyConsoleUser; import sys; username = (SCDynamicStoreCopyConsoleUser(None, None, None) or [None])[0]; username = [username,""][username in [u"loginwindow", None, u""]]; sys.stdout.write(username + "\n");')
+CURRENTUSER=$( scutil <<< "show State:/Users/ConsoleUser" | awk '/Name :/ && ! /loginwindow/ { print $3 }' )
 # Setup Done File
 setupDone="/var/db/receipts/com.d65.provisioning.done.bom"
 # DEPNotify Log file
